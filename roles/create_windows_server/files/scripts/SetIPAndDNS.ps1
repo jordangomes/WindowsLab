@@ -14,11 +14,12 @@ Write-Host "IP: $IPAddress/$IPV4Prefix"
 Write-Host "Gateway: $DefaultGateway"
 Write-Host "DNS1: $DNS1"
 Write-Host "DNS2: $DNS2"
+Write-Host "DNS2: 1.1.1.1 (Default Fallback)"
 
 Start-Sleep -Seconds 5
 
 New-NetIPAddress -InterfaceAlias $Interface -IPAddress $IPAddress -PrefixLength $IPV4Prefix -DefaultGateway $DefaultGateway
-Set-DNSClientServerAddress -InterfaceAlias $Interface -ServerAddresses @($DNS1, $DNS2)
+Set-DNSClientServerAddress -InterfaceAlias $Interface -ServerAddresses @($DNS1, $DNS2, "1.1.1.1")
 
 
 Start-Sleep -Seconds 5
