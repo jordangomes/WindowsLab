@@ -6,6 +6,8 @@
       - SecurityUpdates
       - CriticalUpdates
       - UpdateRollups
+    reject_list:
+      - KB5034439 # this f*cking KB keeps failing
   
 - name: Join Domain
   microsoft.ad.membership:

@@ -25,30 +25,16 @@
                         <CreatePartition wcm:action="add">
                             <Order>1</Order>
                             <Type>Primary</Type>
-                            <Size>300</Size>
-                        </CreatePartition>
-                        <CreatePartition wcm:action="add">
-                            <Order>2</Order>
-                            <Type>Primary</Type>
                             <Extend>true</Extend>
                         </CreatePartition>
                     </CreatePartitions>
                     <ModifyPartitions>
-                        <!-- WinRE Tools Partition -->
-                        <ModifyPartition wcm:action="add">
-                            <Order>1</Order>
-                            <PartitionID>1</PartitionID>
-                            <Label>System Reserved</Label>
-                            <Format>NTFS</Format>
-                            <TypeID>0x27</TypeID>
-                        </ModifyPartition>
-                        <!-- Windows partition -->
                         <ModifyPartition wcm:action="add">
                             <Format>NTFS</Format>
                             <Label>System</Label>
                             <Letter>C</Letter>
-                            <Order>2</Order>
-                            <PartitionID>2</PartitionID>
+                            <Order>1</Order>
+                            <PartitionID>1</PartitionID>
                         </ModifyPartition>
                     </ModifyPartitions>
                     <DiskID>0</DiskID>
