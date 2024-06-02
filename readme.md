@@ -24,8 +24,8 @@ safe_mode_password: 'the safe mode password for your domain controllers'
 ansible_service_account_password: 'the password for the sa_ansible service domain account'
 
 # user account passwords
-standard_account_username: 'the password for your non admin account'
-admin_account_username: 'the password for your admin account'
+standard_account_password: 'the password for your non admin account'
+admin_account_password: 'the password for your admin account'
 
 # Management Host Passwords
 management_host_1_password: 'the password for your management host'
