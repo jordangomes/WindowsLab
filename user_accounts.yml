@@ -12,6 +12,8 @@
         update_password: on_create
         firstname: "{{ standard_account_firstname }}"
         lastname: "{{ standard_account_lastname }}"
+        name: "{{ standard_account_firstname }} {{ standard_account_lastname}}"
+        display_name: "{{ standard_account_firstname }} {{ standard_account_lastname}}"
         domain_username: "sa_ansible"
         domain_password: "{{ ansible_service_account_password }}"
         domain_server: DC01
@@ -28,6 +30,8 @@
         update_password: on_create
         firstname: "{{ admin_account_firstname }}"
         lastname: "{{ admin_account_lastname }}"
+        name: "{{ admin_account_firstname }} {{ admin_account_lastname}}"
+        display_name: "{{ admin_account_firstname }} {{ admin_account_lastname}}"
         groups:
           add:
             - Domain Admins
