@@ -1,0 +1,32 @@
+---
+- name: Install management host packages
+  win_chocolatey:
+    name:
+      - git
+      - vscode
+      - powershell-core
+      - microsoft-windows-terminal
+      - sysinternals
+      - 7zip
+    state: present
+
+- name: Install RSAT Features
+  win_feature:
+    name: 
+      - RSAT-AD-Tools
+      - RSAT-AD-PowerShell
+      - RSAT-AD-AdminCenter
+      - RSAT-ADDS
+      - RSAT-ADDS-Tools
+      - RSAT-ADLDS
+      - RSAT-ADCS
+      - RSAT-DHCP
+      - RSAT-DNS-Server
+      - RSAT-DFS-Mgmt-Con
+      - RSAT-FSRM-Mgmt
+      - RSAT-NFS-Admin
+      - RSAT-Print-Services
+      - RSAT-RemoteAccess
+      - RSAT-RemoteAccess-Mgmt
+      - RSAT-RemoteAccess-PowerShell
+

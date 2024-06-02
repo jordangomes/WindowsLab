@@ -3,3 +3,12 @@
 domain_name: jordanfromit.fun
 netbios_domain_name: JFIT
 domain_path: "DC=jordanfromit,DC=fun"
+
+# Account Variables
+standard_account_username: jordang
+standard_account_firstname: Jordan
+standard_account_lastname: Gomes
+
+admin_account_username: ea.jordang
+admin_account_firstname: Jordan
+admin_account_lastname: Gomes - EA

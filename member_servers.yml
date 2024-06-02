@@ -1,0 +1,13 @@
+---
+- hosts: management_hosts
+  vars:
+    ou_name: Management
+  roles:
+    - member_server
+    - management_host
+
+- hosts: pki_servers
+  vars:
+    ou_name: PKI
+  roles:
+    - member_server

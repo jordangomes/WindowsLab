@@ -1,0 +1,7 @@
+ansible_user: Administrator
+ansible_password: "{{ pki02_password }}"
+ansible_connection: ssh
+ansible_shell_type: cmd
+ansible_ssh_common_args: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+ansible_ssh_retries: 3
+ansible_become_method: runas
