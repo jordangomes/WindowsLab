@@ -1,0 +1,5 @@
+---
+# Domain Variables
+domain_name: jordanfromit.fun
+netbios_domain_name: JFIT
+domain_path: "DC=jordanfromit,DC=fun"

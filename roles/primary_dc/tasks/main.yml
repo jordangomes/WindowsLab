@@ -1,0 +1,46 @@
+- name: Install Active Directory Domain Services
+  win_feature: 
+    name: AD-Domain-Services
+    state: present
+    include_sub_features: yes
+    include_management_tools: yes
+  register: adds_install
+
+- name: Reboot when ADDS feature requires it
+
+  win_reboot:
+  when: adds_install.reboot_required
+    
+- name: Create domain
+  microsoft.ad.domain:
+    dns_domain_name: "{{ domain_name}}"
+    domain_netbios_name: "{{ netbios_domain_name }}"
+    safe_mode_password: "{{ safe_mode_password }}"
+  register: domain_install
+
+- name: Reboot Server if Domain Install requires it
+  win_reboot:
+  when: domain_install.reboot_required
+
+
+- name: Add Ansible Admin Account
+  microsoft.ad.user:
+    state: present
+    enabled: yes
+    identity: sa_ansible
+    sam_account_name: sa_ansible
+    upn: sa_ansible
+    password: "{{ ansible_service_account_password }}"
+    update_password: on_create
+    firstname: Ansible
+    lastname: Service Account
+    groups:
+      add:
+      - Domain Admins
+      - Schema Admins
+      - Enterprise Admins
+    domain_username: "Administrator"
+    domain_password: "{{ domain_controller_password }}"
+    domain_server: DC01
+
+

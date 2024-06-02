@@ -1,0 +1,17 @@
+---
+- name: Install Windows updates
+  win_updates:
+    reboot: true
+    category_names:
+      - SecurityUpdates
+      - CriticalUpdates
+      - UpdateRollups
+  
+- name: Join Domain
+  microsoft.ad.membership:
+    dns_domain_name: "{{ domain_name }}"
+    domain_admin_user: sa_ansible
+    domain_admin_password: "{{ ansible_service_account_password }}"
+    domain_ou_path: "OU={{ ou_name }},OU=Servers,{{ domain_path }}"
+    state: domain
+    reboot: true
