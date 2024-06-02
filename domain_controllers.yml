@@ -1,45 +1,4 @@
 ---
-- hosts: proxmox_hosts
-  strategy: free
-  tasks:
-    - name: create_windows_server
-      when: "'primary_proxmox_host' in group_names" 
-      include_role: 
-        name: create_windows_server
-      vars:
-        vm_hostname: DC01
-        static_ip: yes
-        ip_address: 10.0.30.2
-        ipv4_prefix: 24
-        default_gateway: 10.0.30.1
-        dns_1: 10.0.30.2
-        dns_2: 1.1.1.1
-        deploy_image: Windows Server 2022 SERVERSTANDARDCORE
-        vm_admin_pass: "{{domain_controller_password}}"
-        vm_memory_mb: 1024
-        vm_cores: 1
-        vm_sockets: 1
-        start_at_boot: yes
-    
-    - name: create_windows_server
-      when: "'secondary_proxmox_host' in group_names"
-      include_role: 
-        name: create_windows_server
-      vars:
-        vm_hostname: DC02
-        static_ip: yes
-        ip_address: 10.0.30.3
-        ipv4_prefix: 24
-        default_gateway: 10.0.30.1
-        dns_1: 10.0.30.2
-        dns_2: 1.1.1.1
-        deploy_image: Windows Server 2022 SERVERSTANDARDCORE
-        vm_admin_pass: "{{domain_controller_password}}"
-        vm_memory_mb: 1024
-        vm_cores: 1
-        vm_sockets: 1
-        start_at_boot: yes
-
 - hosts: localhost
   tasks:
     - name: Pause for Domain Controllers to boot
@@ -53,3 +12,9 @@
 - hosts: secondary_domain_controllers
   roles:
     - secondary_dc
+
+- hosts: localhost
+  tasks:
+    - name: Pause for Domain Controllers to come online
+      pause:
+        minutes: 5
