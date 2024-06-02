@@ -7,6 +7,30 @@ This is my first ansible playbook so I'm sure it sucks but I'm proud of it :)
 
 Lots of this was borrowed from https://github.com/clayshek/ans-pve-win-templ so check that out too
 
+## Servers (so far)
+- DC01 (Primary Domain Controller) [prox1]
+- DC02 (Secondary Domain Controller) [prox2]
+- MGMT1 (Management Host - Desktop Experience) [prox1]
+- PKI01 (Primary Certificate Authority - Should be offline) [prox1]
+- PKI02 (Intermediate CA) [prox2]
+
+## AD Structure (Default)
+- jordanfromit.fun
+    - Users
+        - Administrator (Enabled)
+        - sa_ansible (Enabled)
+        - jordang (Enabled)
+        - ea.jordang (Enabled)
+    - Domain Controllers
+        - DC01
+        - DC02
+    - Servers
+        - Management
+            - MGMT1
+        - PKI
+            - PKI01
+            - PKI02
+
 ## Getting started
 1. Clone this repository to a linux box with ansible installed
 2. create a file to be used as a vault (I used 'secrets_file.enc' for this)
@@ -36,29 +60,15 @@ management_host_1_password: 'the password for your management host'
 8. edit group_vars/all.yml to change the domain and account details
 9. run 'ansible-playbook lab.yml -i hosts.ini -e @secrets_file.enc --ask-vault-pass' to spin up the lab (this might take a few hours)
 
-## Servers (so far)
-- DC01 (Primary Domain Controller) [prox1]
-- DC02 (Secondary Domain Controller) [prox2]
-- MGMT1 (Management Host - Desktop Experience) [prox1]
-- PKI01 (Primary Certificate Authority - Should be offline) [prox1]
-- PKI02 (Intermediate CA) [prox2]
+## Todo:
+- DHCP? failover maybe?
+- Configure CAs
+- Azure Connector
+- Intune Connector
+- Intune Certificate Connector
 
-## AD Structure (Default
-- jordanfromit.fun
-    - Users
-        - Administrator (Enabled)
-        - sa_ansible (Enabled)
-        - jordang (Enabled)
-        - ea.jordang (Enabled)
-    - Domain Controllers
-        - DC01
-        - DC02
-    - Servers
-        - Management
-            - MGMT1
-        - PKI
-            - PKI01
-            - PKI02
-
-
-
+## Todo Long Term
+- Workstation VMs (Can I license these without going bankrupt or to jail)
+- SCCM maybe
+- Network Segmentation
+- WPA Enterprise on Unifi APs? (need to investigate)
