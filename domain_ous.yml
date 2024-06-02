@@ -1,0 +1,22 @@
+- hosts: primary_domain_controllers
+  tasks:
+    - name: Create Servers OU
+      microsoft.ad.ou:
+        name: Servers
+        path: "{{ domain_path }}"
+        state: present
+        protect_from_deletion: true
+
+    - name: Create Management Servers OU
+      microsoft.ad.ou:
+        name: Management
+        path: "OU=Servers,{{ domain_path }}"
+        state: present
+        protect_from_deletion: true
+
+    - name: Create PKI Servers OU
+      microsoft.ad.ou:
+        name: PKI
+        path: "OU=Servers,{{ domain_path }}"
+        state: present
+        protect_from_deletion: true

@@ -1,0 +1,38 @@
+---
+- hosts: management_host_1
+  tasks:
+    - name: Setup My Standard Account
+      microsoft.ad.user:
+        state: present
+        enabled: yes
+        identity: "{{ standard_account_username }}"
+        sam_account_name: "{{ standard_account_username }}"
+        upn: "{{ standard_account_username}}@{{ domain_name }}"
+        password: "{{ standard_account_password }}"
+        update_password: on_create
+        firstname: "{{ standard_account_firstname }}"
+        lastname: "{{ standard_account_lastname }}"
+        domain_username: "sa_ansible"
+        domain_password: "{{ ansible_service_account_password }}"
+        domain_server: DC01
+    
+    
+    - name: Setup My Admin Account
+      microsoft.ad.user:
+        state: present
+        enabled: yes
+        identity: "{{ admin_account_username }}"
+        sam_account_name: "{{ admin_account_username }}"
+        upn: "{{ admin_account_username}}@{{ domain_name }}"
+        password: "{{ admin_account_password }}"
+        update_password: on_create
+        firstname: "{{ admin_account_firstname }}"
+        lastname: "{{ admin_account_lastname }}"
+        groups:
+          add:
+            - Domain Admins
+            - Enterprise Admins
+            - Schema Admins
+        domain_username: "sa_ansible"
+        domain_password: "{{ ansible_service_account_password }}"
+        domain_server: DC01
