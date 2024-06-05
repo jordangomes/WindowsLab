@@ -13,6 +13,20 @@
   roles:
     - secondary_dc
 
+- hosts: dc01
+  tags:
+    - dhcp
+  roles:
+    - dhcp
+  vars:
+    dhcp_scope_name: WindowsLAB-Subnet
+    dhcp_scope_id: 10.0.30.0
+    dhcp_scope_start: 10.0.30.30
+    dhcp_scope_end: 10.0.30.240
+    dhcp_scope_mask: 255.255.255.0
+    dhcp_scope_router: 10.0.30.1
+    dhcp_dns_ips: 10.0.30.2,10.0.30.3
+
 - hosts: localhost
   tasks:
     - name: Pause for Domain Controllers to come online

@@ -1,0 +1,62 @@
+---
+- name: Install DHCP Service
+  win_feature: 
+    name: DHCP
+    state: present
+    include_management_tools: yes
+  register: dhcp_install
+
+- name: Reboot when DHCP feature requires it
+  win_reboot:
+  when: dhcp_install.reboot_required
+
+- name: Setup DHCP Server
+  ansible.windows.win_powershell:
+    script: |
+      $DHCPServers = Get-DHCPServerInDC
+      if($DHCPServers.IPAddress -notcontains "{{ ansible_host }}" -or $DHCPServers.DnsName -notcontains "{{ inventory_hostname }}.{{ domain_name }}") {
+        Write-Host "Adding DHCP Server to Domain - {{ inventory_hostname }}.{{ domain_name }}"
+        Add-DHCPServerInDC -DnsName "{{ inventory_hostname }}.{{ domain_name }}" -IPAddress "{{ ansible_host }}"
+      } else {
+        $Ansible.Changed = $false
+      }
+
+- name: Set DHCP Scope, Router and DNS
+  ansible.windows.win_powershell:
+    script: |
+      $DHCPScope = Get-DHCPServerV4Scope -ScopeId "{{ dhcp_scope_id }}" -ErrorAction Ignore
+      $changed = $FALSE
+      
+      if($DHCPScope -eq $null) {
+        Write-Host "Adding Scope {{ dhcp_scope_name }} ({{ dhcp_scope_start }} - {{ dhcp_scope_end }}) [{{ dhcp_scope_mask }}]"
+        Add-DHCPServerV4Scope -Name "{{ dhcp_scope_name }}" -StartRange "{{ dhcp_scope_start }}" -EndRange "{{ dhcp_scope_end }}" -SubnetMask "{{ dhcp_scope_mask }}"
+        $changed = $true
+      }
+
+      $DHCPScopeRouter = Get-DhcpServerV4OptionValue -ScopeId "{{ dhcp_scope_id }}" -OptionId 3 -ErrorAction Ignore
+      if($DHCPScopeRouter.Value -notcontains "{{ dhcp_scope_router }}") {
+        Write-Host "Setting DHCP Scope Router to - {{ dhcp_scope_router }}"
+        Set-DHCPServerV4OptionValue -ScopeId "{{ dhcp_scope_id}}" -Router "{{ dhcp_scope_router }}"
+        $changed = $TRUE
+      }
+
+      $DHCPScopeDNS = Get-DhcpServerV4OptionValue -ScopeId "{{ dhcp_scope_id }}" -OptionId 6 -ErrorAction Ignore
+      $DNSIPAddresses = "{{ dhcp_dns_ips }}" -split ","
+
+      $SetDNS = $false
+      foreach($ip in $DNSIPAddresses) {
+        if($DHCPScopeDNS.Value -notcontains $ip) {
+          $SetDNS = $true
+        }
+      }
+
+      if($SetDNS) {
+        Write-Host "Setting DHCP Scope DNS to - {{ dhcp_dns_ips }}"
+        Set-DHCPServerV4OptionValue -ScopeId "{{ dhcp_scope_id }}" -DnsServer $DNSIPAddresses
+        $changed = $TRUE
+      }
+
+      if(-not $changed) {
+        $Ansible.Changed = $false
+      }
+
