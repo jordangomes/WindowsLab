@@ -1,5 +1,5 @@
-ansible_user: sa_ansible
-ansible_password: "{{ ansible_service_account_password }}"
+ansible_user: Administrator
+ansible_password: "{{ sccm01_password }}"
 ansible_connection: ssh
 ansible_shell_type: cmd
 ansible_ssh_common_args: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null

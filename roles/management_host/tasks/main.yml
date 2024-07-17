@@ -8,6 +8,7 @@
       - microsoft-windows-terminal
       - sysinternals
       - 7zip
+      - wireshark
     state: present
 
 - name: Install RSAT Features

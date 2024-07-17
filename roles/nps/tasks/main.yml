@@ -1,0 +1,11 @@
+---
+- name: Install NPAS Service
+  win_feature: 
+    name: NPAS
+    state: present
+    include_management_tools: yes
+  register: npas_install
+
+- name: Reboot when NPAS feature requires it
+  win_reboot:
+  when: npas_install.reboot_required

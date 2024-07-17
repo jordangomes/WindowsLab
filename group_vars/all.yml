@@ -8,7 +8,9 @@ domain_path: "DC=jordanfromit,DC=fun"
 standard_account_username: jordang
 standard_account_firstname: Jordan
 standard_account_lastname: Gomes
+standard_account_path: "OU=Users,OU=JFIT,{{ domain_path }}"
 
 admin_account_username: ea.jordang
 admin_account_firstname: Jordan
 admin_account_lastname: Gomes - EA
+admin_account_path: "OU=Users,OU=JFIT,{{ domain_path }}"

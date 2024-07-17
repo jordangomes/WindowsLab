@@ -14,6 +14,7 @@
         lastname: "{{ standard_account_lastname }}"
         name: "{{ standard_account_firstname }} {{ standard_account_lastname}}"
         display_name: "{{ standard_account_firstname }} {{ standard_account_lastname}}"
+        path: "{{ standard_account_path }}"
         domain_username: "sa_ansible"
         domain_password: "{{ ansible_service_account_password }}"
         domain_server: DC01
@@ -32,6 +33,7 @@
         lastname: "{{ admin_account_lastname }}"
         name: "{{ admin_account_firstname }} {{ admin_account_lastname}}"
         display_name: "{{ admin_account_firstname }} {{ admin_account_lastname}}"
+        path: "{{ admin_account_path }}"
         groups:
           add:
             - Domain Admins

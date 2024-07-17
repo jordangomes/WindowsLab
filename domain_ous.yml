@@ -20,3 +20,38 @@
         path: "OU=Servers,{{ domain_path }}"
         state: present
         protect_from_deletion: true
+
+    - name: Create RADIUS Servers OU
+      microsoft.ad.ou:
+        name: RADIUS
+        path: "OU=Servers,{{ domain_path }}"
+        state: present
+        protect_from_deletion: true
+
+    - name: Create SCCM Servers OU
+      microsoft.ad.ou:
+        name: SCCM
+        path: "OU=Servers,{{ domain_path }}"
+        state: present
+        protect_from_deletion: true
+
+    - name: Create JFIT OU
+      microsoft.ad.ou:
+        name: JFIT
+        path: "{{ domain_path }}"
+        state: present
+        protect_from_deletion: true
+
+    - name: Create JFIT Users OU
+      microsoft.ad.ou:
+        name: Users
+        path: "OU=JFIT,{{ domain_path }}"
+        state: present
+        protect_from_deletion: true
+
+    - name: Create JFIT Computers OU 
+      microsoft.ad.ou:
+        name: Computers
+        path: "OU=JFIT,{{ domain_path }}"
+        state: present
+        protect_from_deletion: true

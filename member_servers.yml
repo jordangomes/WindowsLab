@@ -6,8 +6,38 @@
     - member_server
     - management_host
 
-- hosts: pki_servers
+- hosts: pki_local
   vars:
     ou_name: PKI
+  roles:
+    - member_server
+
+- hosts: primary_pki
+  tags:
+    - adcs
+  roles:
+    - certificate_authority
+
+- hosts: intermediate_pki
+  tags:
+    - adcs
+  vars:
+    ca_type: EnterpriseSubordinateCA
+    parent_ca: "pki01"
+  roles:
+    - certificate_authority
+
+- hosts: connector_servers
+  tags:
+    - nps
+  vars:
+    ou_name: RADIUS
+  roles:
+    - member_server
+    - nps
+
+- hosts: primary_sccm_servers_local
+  vars:
+    ou_name: SCCM
   roles:
     - member_server

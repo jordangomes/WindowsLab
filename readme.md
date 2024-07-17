@@ -1,8 +1,7 @@
 # Windows Lab Ansible Playbook
-This is a cheeky litle ansible playbook i threw together to spin up a windows lab environment. 
-I started out trying to document the process and write some PowerShell scripts to setup the servers before remembering ansible existed.  
+This is a cheeky litle ansible playbook i threw together to spin up a windows lab environment. I started out trying to document the process and write some PowerShell scripts to setup the servers before remembering ansible existed.
 
-This is my first ansible playbook so I'm sure it sucks but I'm proud of it :)  
+This is my first ansible playbook so I'm sure it sucks but I'm proud of it :)
 ![It aint much but it's Honest Work](https://i.imgur.com/MtmQM0W.jpeg)
 
 Lots of this was borrowed from https://github.com/clayshek/ans-pve-win-templ so check that out too

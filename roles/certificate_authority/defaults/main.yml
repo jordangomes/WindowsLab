@@ -1,0 +1,3 @@
+# Default CA Settings
+ca_type: EnterpriseRootCA
+parent_ca: ""

@@ -1,0 +1,46 @@
+---
+- name: Install ADCS Service
+  win_feature: 
+    name: Adcs-Cert-Authority
+    state: present
+    include_management_tools: yes
+  register: adcs_install
+
+- name: Reboot when ADCS feature requires it
+  win_reboot:
+  when: adcs_install.reboot_required
+
+- name: Setup ADCS CA
+  ansible.windows.win_powershell:
+    script: |
+      whoami
+      $IsCA = $FALSE
+      try {
+        Get-CATemplate
+        $IsCA = $TRUE
+        $Ansible.Changed = $false
+      } catch {
+        Write-Host "Server is not yet a CA... Setting this up"
+      }
+
+      if(-not $IsCA) {
+        $CASettings = @{
+          CAType = "{{ ca_type }}"
+          CryptoProviderName = "RSA#Microsoft Software Key Storage Provider"
+          KeyLength = 4096
+          HashAlgorithmName = "SHA256"
+          CACommonName = "{{ inventory_hostname }}"
+        }
+
+        if("{{ parent_ca }}" -ne "") {
+          $CASettings["ParentCA"] = "{{ parent_ca }}"
+        }
+
+        Install-AdcsCertificationAuthority @CASettings -Confirm:$FALSE
+      }
+
+- name: Set ADCS Service startup mode to auto and ensure it is started
+  ansible.windows.win_service:
+    name: CertSvc
+    start_mode: auto
+    state: started
