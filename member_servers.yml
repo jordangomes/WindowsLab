@@ -36,8 +36,8 @@
     - member_server
     - nps
 
-- hosts: primary_sccm_servers_local
+- hosts: test_servers
   vars:
-    ou_name: SCCM
+    ou_name: Test
   roles:
     - member_server

@@ -37,11 +37,20 @@
     
     # Create VM
     - name: Create VM
-      command: "qm create {{next_vmid.stdout}} --name {{vm_hostname}} --sockets {{vm_sockets}} --cores {{vm_cores}} --memory {{vm_memory_mb}} --ide2 file={{os_iso_location}},media=cdrom --ide3 file=local:iso/{{vm_hostname}}Provision.iso,media=cdrom --net0 model=virtio,bridge=vmbr0,firewall=1,tag={{vlan}} --scsihw virtio-scsi-pci --scsi0 {{pve_storage_id}}:{{drive_size_gb}},format={{format}} --ostype {{vm_os_type}} --agent {{agent}}"
+      command: "qm create {{next_vmid.stdout}} --name {{vm_hostname}} --cpu x86-64-v2-AES --sockets {{install_vm_sockets}} --cores {{install_vm_cores}} --memory {{install_vm_memory_mb}} --ide2 file={{os_iso_location}},media=cdrom --sata1 file=local:iso/{{vm_hostname}}Provision.iso,media=cdrom --net0 model=virtio,bridge=vmbr0,firewall=1,tag={{vlan}} --scsihw virtio-scsi-single --scsi0 {{pve_storage_id}}:{{drive_size_gb}},format={{format}} --ostype {{vm_os_type}} --agent {{agent}} --bios ovmf --machine q35 --efidisk0 {{pve_storage_id}}:1,format=raw"
     
     # Start VM
     - name: Start VM
       command: "qm start {{next_vmid.stdout}}"
+
+    # Wait 8 seconds before sending key to allow machine to boot to "Press any key to boot from CD prompt"
+    - name: Wait 8 seconds
+      wait_for:
+        timeout: 8
+    
+    # Send key to allow machine to boot when "Press any key to boot from CD prompt" appears
+    - name: Send key to bypass CD prompt
+      command: 'qm sendkey {{next_vmid.stdout}} a'
     
     # Wait for VM build
     - name: Wait for OS install, config, update. Up to 120 min. Monitor status if possible.
@@ -51,7 +60,14 @@
     
     # Remove CD drives
     - name: Remove IDE CD Drives
-      command: "qm set {{next_vmid.stdout}} --delete ide2 --delete ide3"
+      command: "qm set {{next_vmid.stdout}} --delete ide2 --delete sata1"
+
+    - name: Resize VM to target specs post-install
+      command: >
+        qm set {{ next_vmid.stdout }}
+        --sockets {{ vm_sockets }}
+        --cores {{ vm_cores }}
+        --memory {{ vm_memory_mb }}
     
     # Remove ISO
     - name: Remove Unattend ISO file

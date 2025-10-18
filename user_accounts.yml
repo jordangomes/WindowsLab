@@ -10,6 +10,7 @@
         upn: "{{ standard_account_username}}@{{ domain_name }}"
         password: "{{ standard_account_password }}"
         update_password: on_create
+        password_never_expires: yes
         firstname: "{{ standard_account_firstname }}"
         lastname: "{{ standard_account_lastname }}"
         name: "{{ standard_account_firstname }} {{ standard_account_lastname}}"
@@ -29,6 +30,7 @@
         upn: "{{ admin_account_username}}@{{ domain_name }}"
         password: "{{ admin_account_password }}"
         update_password: on_create
+        password_never_expires: yes
         firstname: "{{ admin_account_firstname }}"
         lastname: "{{ admin_account_lastname }}"
         name: "{{ admin_account_firstname }} {{ admin_account_lastname}}"

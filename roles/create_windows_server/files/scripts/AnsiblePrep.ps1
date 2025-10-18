@@ -10,3 +10,7 @@ if (!(Get-NetFirewallRule -Name "OpenSSH-Server-In-TCP" -ErrorAction SilentlyCon
 } else {
     Write-Output "Firewall rule 'OpenSSH-Server-In-TCP' has been created and exists."
 }
+
+if((Get-NetFirewallRule -Name "OpenSSH-Server-In-TCP" -ErrorAction SilentlyContinue).Profile -ne @("Domain", "Private")) {
+    Get-NetFirewallRule -Name "OpenSSH-Server-In-TCP" | Set-NetFirewallRule -Profile @("Domain", "Private")
+}

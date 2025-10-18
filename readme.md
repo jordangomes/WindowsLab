@@ -1,4 +1,4 @@
-# Windows Lab Ansible Playbook
+# Windows Lab Ansible Playbook (Server 2025)
 This is a cheeky litle ansible playbook i threw together to spin up a windows lab environment. I started out trying to document the process and write some PowerShell scripts to setup the servers before remembering ansible existed.
 
 This is my first ansible playbook so I'm sure it sucks but I'm proud of it :)
@@ -10,8 +10,10 @@ Lots of this was borrowed from https://github.com/clayshek/ans-pve-win-templ so 
 - DC01 (Primary Domain Controller) [prox1]
 - DC02 (Secondary Domain Controller) [prox2]
 - MGMT1 (Management Host - Desktop Experience) [prox1]
+- CONN01 (Connector Server) [prox2]
 - PKI01 (Primary Certificate Authority - Should be offline) [prox1]
 - PKI02 (Intermediate CA) [prox2]
+- AppControlTest  (Test WDAC - Desktop Experience) [prox1]
 
 ## AD Structure (Default)
 - jordanfromit.fun
@@ -29,6 +31,8 @@ Lots of this was borrowed from https://github.com/clayshek/ans-pve-win-templ so 
         - PKI
             - PKI01
             - PKI02
+        - Test
+            - AppControlTest
 
 ## Getting started
 1. Clone this repository to a linux box with ansible installed
@@ -52,6 +56,16 @@ admin_account_password: 'the password for your admin account'
 
 # Management Host Passwords
 management_host_1_password: 'the password for your management host'
+
+# PKI Passwords
+pki01_password: 'the password for your root PKI server'
+pki02_password: 'the password for your intermedite PKI server'
+
+# connector server passwords
+conn01_password: 'the password for your connector server'
+
+# test server passwords
+test_server_password: 'the password for your test servers'
 ```
 5. Encrypt the ansible file with 'ansible-vault encrypt secrets_file.enc'
 6. modify the roles/create_windows_server/defaults/main.yml to fit your proxmox setup
@@ -59,15 +73,11 @@ management_host_1_password: 'the password for your management host'
 8. edit group_vars/all.yml to change the domain and account details
 9. run 'ansible-playbook lab.yml -i hosts.ini -e @secrets_file.enc --ask-vault-pass' to spin up the lab (this might take a few hours)
 
-## Todo:
-- DHCP? failover maybe?
-- Configure CAs
-- Azure Connector
-- Intune Connector
-- Intune Certificate Connector
-
-## Todo Long Term
-- Workstation VMs (Can I license these without going bankrupt or to jail)
-- SCCM maybe
-- Network Segmentation
-- WPA Enterprise on Unifi APs? (need to investigate)
+# Whats New
+- Server 2025
+  - UEFI enabled 
+  - Dodgy Sendkey hack to bypass press any key prompt
+  - Firewall BS to allow OpenSSH to work
+- Assign more Memory and Cores during provisioning so Windows installs quicker
+- disable password expiry
+- Added server for WDAC testing

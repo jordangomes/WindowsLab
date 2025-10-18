@@ -1,13 +1,13 @@
 # PVE Provisioning Variables
-template_name:  2022DC
+template_name:  2025DC
 pve_storage_id: local-lvm
 vm_cores: 2
-vm_sockets: 2
+vm_sockets: 1
 vm_memory_mb: 2048
 vm_os_type: win11
 drive_size_gb: 50
 start_at_boot: no
-os_iso_location: local:iso/WINDOWS_SERVER_EVAL_2022_x64FRE_en-us.iso
+os_iso_location: local:iso/26100.1742.240906-0331.ge_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso
 format: raw
 agent: enabled=1,fstrim_cloned_disks=1,type=virtio
 
@@ -21,12 +21,19 @@ default_gateway: 0.0.0.0
 dns_1: 10.0.30.2
 dns_2: 1.1.1.1
 
+# Install Phase variables
+install_vm_cores: 4
+install_vm_sockets: 1
+install_vm_memory_mb: 6144
+
 # Unattend.xml template variables:
 vm_hostname: HOSTNAME_UNSPECIFIED
-deploy_image: 'Windows Server 2022 SERVERSTANDARD'
-# Applicable 2022 options for deploy_image: 
-# Windows Server 2022 SERVERSTANDARD, Windows Server 2022 SERVERSTANDARDCORE
-# Windows Server 2022 SERVERDATACENTER, Windows Server 2022 SERVERDATACENTERCORE,
+deploy_image: 'Windows Server 2025 Standard Evaluation (Desktop Experience)'
+# Applicable 2025 options for deploy_image: 
+# Windows Server 2025 Standard Evaluation
+# Windows Server 2025 Standard Evaluation (Desktop Experience)
+# Windows Server 2025 Datacenter Evaluation
+# Windows Server 2025 Datacenter Evaluation (Desktop Experience)
 vm_admin_pass: AnsibleReady!
 vm_time_zone: 'E. Australia Standard Time'
 org_name: 'JordanFromIT'

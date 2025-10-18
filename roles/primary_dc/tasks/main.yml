@@ -32,6 +32,7 @@
     upn: sa_ansible
     password: "{{ ansible_service_account_password }}"
     update_password: on_create
+    password_never_expires: yes
     firstname: Ansible
     lastname: Service Account
     groups:

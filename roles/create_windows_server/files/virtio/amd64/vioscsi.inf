@@ -1,6 +1,6 @@
 ;/*++
 ;
-;Copyright (c) 2012-2022 Red Hat Inc.
+;Copyright (c) 2012-2021 Red Hat Inc.
 ;
 ;
 ;Module Name:
@@ -9,8 +9,8 @@
 ;Abstract:
 ;
 ;Installation Notes:
-;    Using Devcon: Type "devcon install vioscsi.inf PCI\VEN_1AF4&DEV_1004&SUBSYS_00081AF4&REV_00" or
-;                       "devcon install vioscsi.inf PCI\VEN_1AF4&DEV_1048&SUBSYS_11001AF4&REV_01" to install
+;    Step by step driver installation wiki:
+;        https://github.com/virtio-win/kvm-guest-drivers-windows/wiki/Driver-installation
 ;
 ;--*/
 
@@ -19,7 +19,7 @@ Signature="$Windows NT$"
 Class=SCSIAdapter
 ClassGUID={4D36E97B-E325-11CE-BFC1-08002BE10318}
 Provider=%VENDOR%
-DriverVer = 07/21/2023,100.93.104.24000
+DriverVer = 07/09/2025,100.101.104.28500
 CatalogFile=vioscsi.cat
 DriverPackageType = PlugAndPlay
 DriverPackageDisplayName = %VirtioScsi.DeviceDesc%
@@ -39,17 +39,16 @@ vioscsi.sys = 1,,
 ;ExcludeFromSelect = *
 
 [DestinationDirs]
-DefaultDestDir = 10
-vioscsi_Files_Driver = 12
+vioscsi_Files_Driver = 13
 
 ;
 ; Driver information
 ;
 
 [Manufacturer]
-%VENDOR%   = VirtioScsi,NTamd64.6.3
+%VENDOR%   = VirtioScsi,NTamd64.10.0...16299
 
-[VirtioScsi.NTamd64.6.3]
+[VirtioScsi.NTamd64.10.0...16299]
 %VirtioScsi.DeviceDesc% = scsi_inst, PCI\VEN_1AF4&DEV_1004&SUBSYS_00081AF4&REV_00, PCI\VEN_1AF4&DEV_1004
 %VirtioScsi.DeviceDesc% = scsi_inst, PCI\VEN_1AF4&DEV_1048&SUBSYS_11001AF4&REV_01, PCI\VEN_1AF4&DEV_1048
 
@@ -75,7 +74,7 @@ DisplayName    = %VirtioScsi.SVCDESC%
 ServiceType    = %SERVICE_KERNEL_DRIVER%
 StartType      = %SERVICE_BOOT_START%
 ErrorControl   = %SERVICE_ERROR_NORMAL%
-ServiceBinary  = %12%\vioscsi.sys
+ServiceBinary  = %13%\vioscsi.sys
 LoadOrderGroup = SCSI miniport
 AddReg         = pnpsafe_pci_addreg
 
@@ -93,6 +92,8 @@ HKR,,TypesSupported,%REG_DWORD%,7
 [pnpsafe_pci_addreg]
 HKR, "Parameters\PnpInterface", "5", %REG_DWORD%, 0x00000001
 HKR, "Parameters", "BusType", %REG_DWORD%, 0x0000000A
+HKR, "Parameters", DmaRemappingCompatible,0x00010001,0
+
 
 [pnpsafe_pci_addreg_msix]
 HKR, "Interrupt Management",, 0x00000010

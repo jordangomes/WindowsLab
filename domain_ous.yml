@@ -28,9 +28,9 @@
         state: present
         protect_from_deletion: true
 
-    - name: Create SCCM Servers OU
+    - name: Create Test Servers OU
       microsoft.ad.ou:
-        name: SCCM
+        name: Test
         path: "OU=Servers,{{ domain_path }}"
         state: present
         protect_from_deletion: true

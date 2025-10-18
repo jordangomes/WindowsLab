@@ -20,7 +20,7 @@ Start-Sleep -Seconds 5
 
 New-NetIPAddress -InterfaceAlias $Interface -IPAddress $IPAddress -PrefixLength $IPV4Prefix -DefaultGateway $DefaultGateway
 Set-DNSClientServerAddress -InterfaceAlias $Interface -ServerAddresses @($DNS1, $DNS2, "1.1.1.1")
-
+Set-NetConnectionProfile -InterfaceAlias $Interface -NetworkCategory Private
 
 Start-Sleep -Seconds 5
 
